@@ -1,0 +1,47 @@
+fail_fast: true
+repos:
+  - repo: https://github.com/MozillaSecurity/orion
+    rev: v0.0.2
+    hooks:
+      - id: orion_ci
+  - repo: local
+    hooks:
+      - id: black
+        name: black
+        entry: poetry run black --check --diff
+        language: system
+        types: [ python ]
+      - id: flake8
+        name: flake8
+        entry: poetry run flake8
+        language: system
+        types: [ python ]
+        require_serial: true
+      - id: gitlint
+        name: gitlint
+        entry: poetry run gitlint
+        language: system
+        args: [--contrib=contrib-title-conventional-commits, --ignore=body-is-missing, --msg-filename]
+        stages: [commit-msg]
+      - id: mypy
+        name: mypy
+        entry: poetry run mypy prefmonitor
+        language: system
+        pass_filenames: false
+        types: [ python ]
+      - id: pylint
+        name: pylint
+        entry: poetry run pylint -j 0 prefmonitor
+        language: system
+        pass_filenames: false
+        types: [ python ]
+      - id: taskcluster_yml
+        name: taskcluster_yml
+        entry: poetry run taskcluster_yml_validator
+        files: "^\\.taskcluster\\.yml$"
+        language: system
+      - id: toml-sort
+        name: toml-sort
+        entry: poetry run toml-sort --check -a
+        files: "^pyproject\\.toml$"
+        language: system
