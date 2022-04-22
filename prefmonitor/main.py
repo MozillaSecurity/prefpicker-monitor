@@ -2,8 +2,8 @@
 # v. 2.0. If a copy of the MPL was not distributed with this file, You can
 # obtain one at http://mozilla.org/MPL/2.0/.
 
-import argparse
 import os
+from argparse import ArgumentParser, Namespace
 from logging import DEBUG, ERROR, INFO, WARNING, basicConfig, getLogger
 from string import Template
 from typing import Any, Optional, Dict, List
@@ -23,14 +23,14 @@ ISSUE_BODY = Template(
 )
 
 
-def parse_args(argv: Any = None) -> argparse.Namespace:
+def parse_args(argv: Any = None) -> Namespace:
     """Arg parser
 
     :param argv: Command line to use instead of sys.argv (optional)
     """
     log_level_map = {"ERROR": ERROR, "WARN": WARNING, "INFO": INFO, "DEBUG": DEBUG}
 
-    parser = argparse.ArgumentParser("PrefMonitor - Prefpicker bug dependency monitor")
+    parser = ArgumentParser("PrefMonitor - Prefpicker bug dependency monitor")
     parser.add_argument(
         "--token",
         default=os.environ.get("GITHUB_TOKEN"),
@@ -84,17 +84,16 @@ def create_issues(prefs: List[str], token: str, dry_run: bool) -> None:
 
     for pref in prefs:
         title = ISSUE_TITLE.substitute({"pref": pref})
-        body = ISSUE_BODY.substitute({"pref": pref})
-        has_issue = False
         for issue in repo.get_issues(state="open"):
             if issue.title == title:
                 LOG.warning(f'An issue for "{pref}" already exists!')
-                has_issue = True
-
-        if not has_issue:
+                break
+        else:
             LOG.info(f"Creating issue: {title}")
             if not dry_run:
-                repo.create_issue(title=title, body=body)
+                repo.create_issue(
+                    title=title, body=ISSUE_BODY.substitute({"pref": pref})
+                )
 
 
 def main(argv: Optional[Dict[str, Any]] = None) -> None:
@@ -110,5 +109,5 @@ def main(argv: Optional[Dict[str, Any]] = None) -> None:
     basicConfig(format=log_fmt, datefmt=date_fmt, level=args.log_level)
 
     prefs = get_closed_prefs()
-    if len(prefs) != 0:
+    if prefs:
         create_issues(prefs, args.token, args.dry_run)
