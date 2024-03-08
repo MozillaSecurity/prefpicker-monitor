@@ -48,7 +48,7 @@ version = "0.1.1"
 PyGithub = "^1.55"
 bugsy = "^0.12.0"
 prefpicker = {git = "https://github.com/MozillaSecurity/prefpicker.git"}
-python = "^3.7"
+python = "^3.8.1"
 six = "^1.16.0"
 
 [tool.poetry.dev-dependencies]
