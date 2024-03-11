@@ -61,10 +61,13 @@ tasks:
                 key: key
 
   in:
-    $if: 'tasks_for != "github-pull-request" || event["action"] in ["opened", "reopened", "synchronize"]'
+    $if: >
+      (tasks_for == "github-push")
+      || (tasks_for == "github-pull-request" && event["action"] in ["opened", "reopened", "synchronize"])
+      || (tasks_for == "github-release" && event["action"] in ["published"])
     then:
-      - created: {$fromNow: ''}
-        deadline: {$fromNow: '1 hour'}
+      - created: { $fromNow: '' }
+        deadline: { $fromNow: '1 hour' }
         provisionerId: proj-fuzzing
         workerType: ci
         payload:
@@ -77,8 +80,8 @@ tasks:
             namespace: project.fuzzing.orion.orion-decision.master
           env:
             PROJECT_NAME: ${project_name}
-            CI_MATRIX: {$json: {$eval: matrix}}
-            GITHUB_EVENT: {$json: {$eval: event}}
+            CI_MATRIX: { $json: { $eval: matrix } }
+            GITHUB_EVENT: { $json: { $eval: event } }
             GITHUB_ACTION: ${tasks_for}
             TASKCLUSTER_NOW: ${now}
           command:
@@ -95,3 +98,4 @@ tasks:
           description: Schedule CI tasks for ${project_name}
           owner: jkratzer@mozilla.com
           source: https://github.com/MozillaSecurity/orion
+    else: [ ]
