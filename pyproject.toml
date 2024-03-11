@@ -4,17 +4,17 @@ requires = ["poetry>=1.0.5"]
 
 [tool.coverage.report]
 exclude_lines = [
-    "pragma: no cover",
+  "pragma: no cover"
 ]
 
 [tool.coverage.run]
 omit = [
-    "*/setup.py",
-    "*/tests/*",
-    "*/build/*",
-    "*/dist/*",
-    "*/.tox/*",
-    "*/.egg/*",
+  "*/.egg/*",
+  "*/.tox/*",
+  "*/build/*",
+  "*/dist/*",
+  "*/setup.py",
+  "*/tests/*"
 ]
 
 [tool.isort]
@@ -31,13 +31,13 @@ strict = "True"
 
 [tool.poetry]
 authors = [
-    "Jason Kratzer <jkratzer@mozilla.com>"
+  "Jason Kratzer <jkratzer@mozilla.com>"
 ]
 description = "Prefpicker bug dependency monitor"
 homepage = "https://github.com/MozillaSecurity/prefpicker-monitor"
 license = "MPL-2.0"
 maintainers = [
-    "Mozilla Fuzzing Team <fuzzing@mozilla.com>"
+  "Mozilla Fuzzing Team <fuzzing@mozilla.com>"
 ]
 name = "prefmonitor"
 readme = "README.md"
@@ -83,25 +83,25 @@ max-line-length = 88
 
 [tool.pylint.messages_control]
 disable = [
-    "bad-continuation",
-    "fixme",
-    "invalid-name",
-    "line-too-long",
-    "logging-format-interpolation",
-    "logging-fstring-interpolation",
-    "missing-module-docstring",
-    "missing-return-doc",
-    "missing-yield-doc",
-    "too-few-public-methods",
-    "too-many-arguments",
-    "too-many-branches",
-    "too-many-instance-attributes",
-    "too-many-lines",
-    "too-many-locals",
-    "too-many-nested-blocks",
-    "too-many-return-statements",
-    "too-many-statements",
-    "useless-object-inheritance"
+  "bad-continuation",
+  "fixme",
+  "invalid-name",
+  "line-too-long",
+  "logging-format-interpolation",
+  "logging-fstring-interpolation",
+  "missing-module-docstring",
+  "missing-return-doc",
+  "missing-yield-doc",
+  "too-few-public-methods",
+  "too-many-arguments",
+  "too-many-branches",
+  "too-many-instance-attributes",
+  "too-many-lines",
+  "too-many-locals",
+  "too-many-nested-blocks",
+  "too-many-return-statements",
+  "too-many-statements",
+  "useless-object-inheritance"
 ]
 
 [tool.pytest.ini_options]
