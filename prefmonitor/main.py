@@ -11,6 +11,7 @@ from typing import Any, Optional, Dict, List
 from bugsy import Bugsy
 from github import Github
 from prefpicker import PrefPicker
+from yaml import safe_load
 
 LOG = getLogger(__name__)
 
@@ -62,8 +63,8 @@ def get_closed_prefs() -> List[str]:
 
     is_closed = []
     for template in PrefPicker.templates():
-        picker = PrefPicker.load_template(template)
-        for pref, entry in picker.prefs.items():
+        raw_prefs = safe_load(template.read_bytes())
+        for pref, entry in raw_prefs["pref"].items():
             if "review_on_close" in entry:
                 bugs = bugsy.request("bug", params={"id": entry["review_on_close"]})
                 if all(bug["status"] == "RESOLVED" for bug in bugs["bugs"]):
