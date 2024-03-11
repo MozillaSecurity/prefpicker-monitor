@@ -42,7 +42,7 @@ maintainers = [
 name = "prefmonitor"
 readme = "README.md"
 repository = "https://github.com/MozillaSecurity/prefpicker"
-version = "0.1.1"
+version = "1.0.0"
 
 [tool.poetry.dependencies]
 PyGithub = "^2.2.0"
